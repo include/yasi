@@ -1,0 +1,91 @@
+#!/bin/bash
+SELENIUM_HOME=/servers/selenium
+LOG_DIR=/var/log/selenium
+ERROR_LOG=$LOG_DIR/selenium_error.log
+STD_LOG=$LOG_DIR/selenium_std.log
+TMP_DIR=$SELENIUM_HOME/tmp
+PID_FILE=/var/run/selenium.pid
+JAVA=/usr/bin/java
+SELENIUM_APP="$SELENIUM_HOME/selenium-server-standalone-2.14.0.jar"
+USER=selenium
+
+case "${1:-''}" in
+        'start')
+                if test -f $PID_FILE
+                  then
+                  PID=`cat $PID_FILE`
+                  if  ps --pid $PID >/dev/null  ;
+                    then
+                    echo "Selenium is running...$PID"
+                    exit 0 
+                  else
+                    echo "Selenium isn't running..."
+                    echo "Removing stale pid file: $PID_FILE"
+                  fi
+                fi
+                echo "Starting Selenium..."
+                #echo "COMMAND: su $USER -c \"$JAVA -jar $SELENIUM_APP >$STD_LOG 2>$ERROR_LOG &\""
+
+                su $USER -c "$JAVA -jar $SELENIUM_APP -port 4444 >$STD_LOG 2>$ERROR_LOG &"
+                error=$?
+                if test $error -gt 0
+                then
+                  echo "${bon}Error $error! Couldn't start Selenium!${boff}"
+                fi
+                ps  -C java -o pid,cmd | grep $SELENIUM_APP  | awk {'print $1 '} > $PID_FILE
+        ;;
+        'stop')
+                if test -f $PID_FILE
+                then
+                  echo "Stopping Selenium..."
+                  PID=`cat $PID_FILE`
+                  kill -9 $PID
+                  if kill -9 $PID ;
+                    then
+                    sleep 2
+                    test -f $PID_FILE && rm -f $PID_FILE
+                  else
+                    echo "Selenium could not be stopped..."
+                  fi
+                else
+                  echo "Selenium is not running."
+                fi
+                ;;
+
+        'restart')
+                if test -f $PID_FILE
+                then
+                  su $USER -c "kill -HUP `cat $PID_FILE`"
+                  test -f $PID_FILE && rm -f $PID_FILE
+                  sleep 1
+                  su $USER -c "$JAVA -jar $SELENIUM_APP >$STD_LOG 2>$ERROR_LOG &"
+                  error=$?
+                  if test $error -gt 0
+                  then
+                    echo "${bon}Error $error! Couldn't start Selenium!${boff}"
+                  fi
+                  ps  -C java -o pid,cmd | grep $SELENIUM_APP  | awk {'print $1 '} > $PID_FILE
+                  echo "Reload Selenium..."
+                else
+                  echo "Selenium isn't running..."
+                fi
+                ;;
+        'status')
+                if test -f $PID_FILE
+                  then
+                  PID=`cat $PID_FILE`
+                  if  ps --pid $PID >/dev/null ;
+                    then
+                    echo "Selenium is running...$PID"
+                  else
+                    echo "Selenium isn't running..."
+                  fi
+                else
+                  echo "Selenium isn't running..."
+                fi
+                ;;
+        *)      # no parameter specified
+                echo "Usage: $SELF start|stop|restart|status"
+                exit 1
+        ;;
+esac

@@ -1,0 +1,64 @@
+<head>
+	<meta charset="UTF-8">
+	<title>YASI</title>
+	
+	<link href="/css/yasi.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap-dropdown.js"></script>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+</head>
+
+<body>
+
+	<div class="navbar">
+		<div class="navbar-inner">
+    		<div class="container" style="width: auto;">
+  				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+  	 				<span class="icon-bar"></span>
+  	  				<span class="icon-bar"></span>
+  	  				<span class="icon-bar"></span>
+  				</a>
+  				<a class="brand" href="/">YASI</a>
+  				<div class="nav-collapse">
+  	  				<ul class="nav">
+  						<li class="active"><a href="/">Home</a></li>
+  						<li class="divider-vertical"></li>
+  						<li><a href="/nagiosql/host/list">List Hosts</a></li>
+  						<li class="divider-vertical"></li>
+  						<li><a href="/resque">Queue</a></li>
+  	  				</ul>
+					<ul class="nav pull-right">
+		  				<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+			  					<li><a href="http://localhost/nagios/">Nagios</a></li>
+			  					<li><a href="http://localhost/nagiosql/">NagiosQL</a></li>
+			  					<li><a href="https://cactiserver">Cacti</a></li>
+							</ul>
+		  				</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+  	</div>
+
+<!-- ##################### -->
+
+
+<!-- ##################### -->
+  	
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+				<%= yield %>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

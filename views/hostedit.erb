@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="span4">
+	<table>
+	  <thead>
+		<tr>
+		  <th>Hostname</th>
+		  <th>Address</th>
+		  <th>FQDN</th>
+		  <th>Hostgroup</th>
+		  <th>Hostgroup desc</th>
+		  <th>Status</th>
+		  <th></th>
+		</tr>
+	  </thead>
+	  <tbody>
+		<tr>
+		  <form action="/nagiosql/e/host/<%= @h.id %>" method="POST" class="form-horizontal">
+			<fieldset>
+			  <div class="control-group">
+				<input type="hidden" name="_method" value="PUT" />
+				<input type="hidden" name="insertmode" value="web" />
+				<td><input class="input-medium" type="text" name="host[hostname]" value="<%= @h.hostname %>"></td>
+				<td><input class="input-medium" type="text" name="host[address]" value="<%= @h.address %>"</td>
+				<td><input class="input-large" type="text" name="host[fqdn]" value="<%= @h.fqdn %>"></td>
+				<td><input class="input-small" type="text" name="host[hostgroup]" value="<%= @h.hostgroup %>"></td>
+				<td><input class="input-medium" type="text" name="host[hostgroupdesc]" value="<%= @h.hostgroupdesc %>"></td>
+				<td><input class="input-small" type="text" name="host[status]" value="<%= @h.status %>"></td>				
+				<td><button type="submit" class="btn btn-small btn-info">Update</button></td>
+			  </div>
+			</fieldset>
+		  </form>
+		</tr>
+	  </tbody>
+	</table>
+  </div>
+</div>

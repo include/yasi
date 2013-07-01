@@ -1,0 +1,7 @@
+release.sh
+config/*
+tmp/
+.*.swp
+.rvmrc
+.DS_Store
+vendor/*
